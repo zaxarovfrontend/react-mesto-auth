@@ -56,3 +56,13 @@
 
 /* блок hover */
 @import url(../src/blocks/hover/hover.css);
+
+/* блок Login */
+@import url(../src/blocks/login/login.css);
+@import url(../src/blocks/login/__form/__form.css);
+@import url(../src/blocks/login/__title/login__title.css);
+@import url(../src/blocks/login/__input/login__input.css);
+@import url(../src/blocks/login/__button/login__button.css);
+@import url(../src/blocks/login/__question/login__question.css);
+
+
