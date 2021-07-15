@@ -5,13 +5,14 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
-import EditProfilePopup from "./EditProfilePopup";
-import AddPlacePopup from "./AddPlacePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
+//import EditProfilePopup from "./EditProfilePopup";
+//import AddPlacePopup from "./AddPlacePopup";
+//import EditAvatarPopup from "./EditAvatarPopup";
 import {Redirect, Route, Switch} from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import Register from "./Register";
+import InfoTooltip from "./InfoTooltip";
 
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
 
@@ -19,12 +20,13 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([])
     const [selectedCard, setSelectedCard] = React.useState(null);
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+   // const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+   // const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+    //const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     //Авторизация
     const [loggedIn, setLoggedIn] = React.useState(false);
-
+    const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
+    const [isSuccess, setIsSuccess] = React.useState(false);
 
     //запрос данных пользователя
     React.useEffect(() => {
@@ -52,22 +54,23 @@ function App() {
     }
 
     function handleEditProfileClick() {
-        setIsEditProfilePopupOpen(true);
+        //setIsEditProfilePopupOpen(true);
     }
 
     function handleEditAvatarClick() {
-        setIsEditAvatarPopupOpen(true);
+        //setIsEditAvatarPopupOpen(true);
     }
 
     function handleAddPlaceClick() {
-        setIsAddPlacePopupOpen(true);
+       // setIsAddPlacePopupOpen(true);
     }
 
     function closeAllPopups() {
         setSelectedCard(null)
-        setIsEditProfilePopupOpen(false)
-        setIsAddPlacePopupOpen(false)
-        setIsEditAvatarPopupOpen(false)
+        //setIsEditProfilePopupOpen(false)
+        //setIsAddPlacePopupOpen(false)
+        //setIsEditAvatarPopupOpen(false)
+        //setIsInfoTooltipPopupOpen(false)
     }
 
     function handleCardLike(card) {
@@ -139,27 +142,29 @@ function App() {
                         <Register/>
                     </Route>
                     <Route>
-                        {loggedIn ? <Redirect to ="/sign-in" /> : <Redirect to ="/" />}
+                        {loggedIn ? <Redirect to="/sign-in"/> : <Redirect to="/"/>}
                     </Route>
-                <ProtectedRoute exact path='/'
-                                component={Main}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                onCardClick={handleCardClick}
-                cards={cards}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-                />
+                    <ProtectedRoute exact path='/'
+                                    component={Main}
+                                    // loggetIn={loggetIn}
+                                    onEditProfile={handleEditProfileClick}
+                                    onAddPlace={handleAddPlaceClick}
+                                    onEditAvatar={handleEditAvatarClick}
+                                    onCardClick={handleCardClick}
+                                    cards={cards}
+                                    onCardLike={handleCardLike}
+                                    onCardDelete={handleCardDelete}
+                    />
                 </Switch>
                 <Footer/>
-                <ImagePopup card={selectedCard !== null && selectedCard} onClose={closeAllPopups}/>
-                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}
-                                  onUpdateUser={handleUpdateUser}/>
-                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}
-                                 onUpdateAvatar={handleUpdateAvatar}/>
-                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+                {/*<ImagePopup card={selectedCard !== null && selectedCard} onClose={closeAllPopups}/>*/}
+                {/*<EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}*/}
+                {/*                  onUpdateUser={handleUpdateUser}/>*/}
+                {/*<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}*/}
+                {/*                 onUpdateAvatar={handleUpdateAvatar}/>*/}
+                {/*<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>*/}
             </div>
+            <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isSuccess}/>
         </CurrentUserContext.Provider>
     )
 }

@@ -65,4 +65,7 @@
 @import url(../src/blocks/login/__button/login__button.css);
 @import url(../src/blocks/login/__question/login__question.css);
 
-
+/* окно уведомления */
+@import url(blocks/popup/__tooltip/tooltip.css);
+@import url(blocks/popup/__tooltip/_image/popup__tooltip_image.css);
+@import url(blocks/popup/__tooltip/__title/popup__title-tooltip.css);
