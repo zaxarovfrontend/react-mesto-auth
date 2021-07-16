@@ -69,3 +69,9 @@
 @import url(blocks/popup/__tooltip/tooltip.css);
 @import url(blocks/popup/__tooltip/_image/popup__tooltip_image.css);
 @import url(blocks/popup/__tooltip/__title/popup__title-tooltip.css);
+@import url(blocks/header/__sigin/header__sigin.css);
+@import url(blocks/header/__exit/header__exit-style.css);
+@import url(blocks/header/__email/header__email.css);
+@import url(blocks/header/__container/header__container.css);
+@import url(blocks/header/__signout/header__signout.css);
+

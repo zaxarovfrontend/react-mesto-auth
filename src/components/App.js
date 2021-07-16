@@ -5,28 +5,32 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from './ImagePopup';
-//import EditProfilePopup from "./EditProfilePopup";
-//import AddPlacePopup from "./AddPlacePopup";
-//import EditAvatarPopup from "./EditAvatarPopup";
-import {Redirect, Route, Switch} from 'react-router-dom';
+import EditProfilePopup from "./EditProfilePopup";
+import AddPlacePopup from "./AddPlacePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import {Redirect, Route, Switch, useHistory} from 'react-router-dom';
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
-import Register from "./Register";
+import Registration from "./Registration";
 import InfoTooltip from "./InfoTooltip";
-
+import * as auth from "../utils/auth";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import {checkToken} from "../utils/auth";
+
 
 function App() {
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([])
     const [selectedCard, setSelectedCard] = React.useState(null);
-   // const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-   // const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    //const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     //Авторизация
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
     const [isSuccess, setIsSuccess] = React.useState(false);
+    const [userEmail, setUserEmail] = React.useState('')
+    const history = useHistory();
 
     //запрос данных пользователя
     React.useEffect(() => {
@@ -54,23 +58,27 @@ function App() {
     }
 
     function handleEditProfileClick() {
-        //setIsEditProfilePopupOpen(true);
+        setIsEditProfilePopupOpen(true);
     }
 
     function handleEditAvatarClick() {
-        //setIsEditAvatarPopupOpen(true);
+        setIsEditAvatarPopupOpen(true);
     }
 
     function handleAddPlaceClick() {
-       // setIsAddPlacePopupOpen(true);
+        setIsAddPlacePopupOpen(true);
+    }
+
+    function handleInfoTooltipPopupOpen() {
+        setIsInfoTooltipPopupOpen(!isInfoTooltipPopupOpen)
     }
 
     function closeAllPopups() {
         setSelectedCard(null)
-        //setIsEditProfilePopupOpen(false)
-        //setIsAddPlacePopupOpen(false)
-        //setIsEditAvatarPopupOpen(false)
-        //setIsInfoTooltipPopupOpen(false)
+        setIsEditProfilePopupOpen(false)
+        setIsAddPlacePopupOpen(false)
+        setIsEditAvatarPopupOpen(false)
+        setIsInfoTooltipPopupOpen(false)
     }
 
     function handleCardLike(card) {
@@ -130,23 +138,45 @@ function App() {
             })
     }
 
+    function register(email, password) {
+        auth.register(email, password).then(
+            () => {
+                setIsSuccess(true)
+                handleInfoTooltipPopupOpen()
+                history.push('/');
+            })
+            .catch((err) => {
+                console.log(err)
+                setIsSuccess(false)
+                handleInfoTooltipPopupOpen()
+            })
+    }
+
+    function login(email, password) {
+        auth.authorization(email, password).then(
+            () => {
+                setLoggedIn(true)
+                history.push("/");
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    function signOut() {
+        setLoggedIn(false);
+        history.push('sign-in');
+    }
+
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
-                <Header/>
+                <Header loggedIn={loggedIn} userEmail={userEmail} onSignOut={signOut}/>
                 <Switch>
-                    <Route path='/sign-in'>
-                        <Login/>
-                    </Route>
-                    <Route path='/sign-up'>
-                        <Register/>
-                    </Route>
-                    <Route>
-                        {loggedIn ? <Redirect to="/sign-in"/> : <Redirect to="/"/>}
-                    </Route>
                     <ProtectedRoute exact path='/'
                                     component={Main}
-                                    // loggetIn={loggetIn}
+                                    loggedIn={loggedIn}
                                     onEditProfile={handleEditProfileClick}
                                     onAddPlace={handleAddPlaceClick}
                                     onEditAvatar={handleEditAvatarClick}
@@ -155,16 +185,30 @@ function App() {
                                     onCardLike={handleCardLike}
                                     onCardDelete={handleCardDelete}
                     />
+                    <Route path='/sign-up'>
+                        <Registration onRegister={register}/>
+                    </Route>
+                    <Route path='/sign-in'>
+                        <Login onLogin={login}/>
+                    </Route>
+                    <Route>
+                        {loggedIn ? <Redirect to="/"/> : <Redirect to="sign-in"/>}
+                    </Route>
                 </Switch>
                 <Footer/>
-                {/*<ImagePopup card={selectedCard !== null && selectedCard} onClose={closeAllPopups}/>*/}
-                {/*<EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}*/}
-                {/*                  onUpdateUser={handleUpdateUser}/>*/}
-                {/*<EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}*/}
-                {/*                 onUpdateAvatar={handleUpdateAvatar}/>*/}
-                {/*<AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>*/}
+                <ImagePopup card={selectedCard !== null && selectedCard}
+                            onClose={closeAllPopups}/>
+                <EditProfilePopup isOpen={isEditProfilePopupOpen}
+                                  onClose={closeAllPopups}
+                                  onUpdateUser={handleUpdateUser}/>
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen}
+                                 onClose={closeAllPopups}
+                                 onUpdateAvatar={handleUpdateAvatar}/>
+                <AddPlacePopup isOpen={isAddPlacePopupOpen}
+                               onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
             </div>
-            <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isSuccess}/>
+            <InfoTooltip isOpen={isInfoTooltipPopupOpen}
+                         onClose={closeAllPopups} isSuccess={isSuccess}/>
         </CurrentUserContext.Provider>
     )
 }

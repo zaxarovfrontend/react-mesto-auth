@@ -1,25 +1,23 @@
 .header__logo {
   max-width: 103px;
-  padding-left: 27px;
-  padding-bottom: 30px;
   transition: opacity 0.9s linear 0.3s;
+  margin-bottom: 2px;
 }
 
 
 @media screen and (min-width: 1024px) {
   .header__logo {
     max-width: 128px;
-    padding-bottom: 39px;
     padding-left: 0;
   }
 }
 
 
 
+
 @media screen and (min-width: 1280px) {
   .header__logo {
     max-width: 142px;
-    padding-bottom: 39px;
     padding-left: 0;
   }
 }
