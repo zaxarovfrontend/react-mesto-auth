@@ -15,7 +15,6 @@ import Registration from "./Registration";
 import InfoTooltip from "./InfoTooltip";
 import * as auth from "../utils/auth";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
-import {checkToken} from "../utils/auth";
 
 
 function App() {
@@ -52,14 +51,7 @@ function App() {
 
     }, [])
 
-    React.useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            saveToken();
-        }
-    }, [checkToken]);
 
-    
     function handleCardClick(card) {
         setSelectedCard(card)
     }
@@ -160,10 +152,13 @@ function App() {
     }
 
     function login(email, password) {
+
         auth.authorization(email, password).then(
-            () => {
+            (data) => {
+                localStorage.setItem('token', data.token);
+                setUserEmail(email)
                 setLoggedIn(true)
-                history.push("/");
+                history.push("/my-profile");
             })
             .catch((err) => {
                 console.log(err)
@@ -171,25 +166,32 @@ function App() {
     }
 
     function signOut() {
+        localStorage.removeItem("token");
         setLoggedIn(false);
         history.push('sign-in');
     }
 
 
-
-    const saveToken = React.useCallback(() => {
+    const checkToken = React.useCallback(() => {
         const token = localStorage.getItem('token');
         auth.checkToken(token).then(
             (data) => {
                 setLoggedIn(true);
                 setUserEmail(data.data.email);
-                history.push('/');
+                history.push('/my-profile');
             })
             .catch((err) => {
                     console.log(err);
                 }
             );
-    }, [history]);
+    }, []);
+
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            checkToken();
+        }
+    }, []);
 
 
     return (
@@ -197,7 +199,8 @@ function App() {
             <div className="page">
                 <Header loggedIn={loggedIn} userEmail={userEmail} onSignOut={signOut}/>
                 <Switch>
-                    <ProtectedRoute exact path='/'
+                    <Route exact path='/'></Route>
+                    <ProtectedRoute path='/my-profile'
                                     component={Main}
                                     loggedIn={loggedIn}
                                     onEditProfile={handleEditProfileClick}
@@ -212,7 +215,7 @@ function App() {
                         <Registration onRegister={register}/>
                     </Route>
                     <Route path='/sign-in'>
-                        <Login onLogin={login}/>
+                        <Login onLogin={login} onChekToken={checkToken}/>
                     </Route>
                     <Route>
                         {loggedIn ? <Redirect to="/"/> : <Redirect to="sign-in"/>}
