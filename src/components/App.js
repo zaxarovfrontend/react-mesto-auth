@@ -52,7 +52,14 @@ function App() {
 
     }, [])
 
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            saveToken();
+        }
+    }, [checkToken]);
 
+    
     function handleCardClick(card) {
         setSelectedCard(card)
     }
@@ -169,6 +176,22 @@ function App() {
     }
 
 
+
+    const saveToken = React.useCallback(() => {
+        const token = localStorage.getItem('token');
+        auth.checkToken(token).then(
+            (data) => {
+                setLoggedIn(true);
+                setUserEmail(data.data.email);
+                history.push('/');
+            })
+            .catch((err) => {
+                    console.log(err);
+                }
+            );
+    }, [history]);
+
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
@@ -194,6 +217,7 @@ function App() {
                     <Route>
                         {loggedIn ? <Redirect to="/"/> : <Redirect to="sign-in"/>}
                     </Route>
+
                 </Switch>
                 <Footer/>
                 <ImagePopup card={selectedCard !== null && selectedCard}
@@ -206,9 +230,10 @@ function App() {
                                  onUpdateAvatar={handleUpdateAvatar}/>
                 <AddPlacePopup isOpen={isAddPlacePopupOpen}
                                onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+                <InfoTooltip isOpen={isInfoTooltipPopupOpen}
+                             onClose={closeAllPopups} isSuccess={isSuccess}/>
             </div>
-            <InfoTooltip isOpen={isInfoTooltipPopupOpen}
-                         onClose={closeAllPopups} isSuccess={isSuccess}/>
+
         </CurrentUserContext.Provider>
     )
 }
