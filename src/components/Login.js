@@ -20,8 +20,9 @@ function Login(props) {
 
     return(
         <div className='login'>
-         <h1 className='login__title' >Вход</h1>
+        
             <form className='login__form' onSubmit={handleSubmit}>
+            <h1 className='login__title' >Вход</h1>
                 <input className='login__input' type='email' name='email'
                        value={email} onChange={changeEmail} placeholder='Email' required/>
                     <input className='login__input'

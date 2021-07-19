@@ -3,7 +3,15 @@
     color: #FFFFFF;
     font-style: normal;
     font-weight: normal;
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 14px;
+    line-height: 17px;
     padding: 0;
 }
+
+
+@media screen and (min-width: 1024px) {
+    .header__sign{
+        font-size: 18px;
+        line-height: 22px;
+    }
+  }

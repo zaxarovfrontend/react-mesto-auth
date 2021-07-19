@@ -3,9 +3,16 @@
     text-decoration: none;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
     color: #FFFFFF;
     letter-spacing: 1px;
-    margin-top: 15px;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 20px;
 }
+
+@media screen and (min-width: 1024px) {
+    .login__question {
+        margin-top: 15px;
+    }
+  }
+  

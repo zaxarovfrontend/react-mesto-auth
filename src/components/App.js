@@ -21,9 +21,9 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([])
     const [selectedCard, setSelectedCard] = React.useState(null);
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+    // const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+    // const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+    // const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     //Авторизация
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
@@ -57,15 +57,15 @@ function App() {
     }
 
     function handleEditProfileClick() {
-        setIsEditProfilePopupOpen(true);
+        //setIsEditProfilePopupOpen(true);
     }
 
     function handleEditAvatarClick() {
-        setIsEditAvatarPopupOpen(true);
+        //setIsEditAvatarPopupOpen(true);
     }
 
     function handleAddPlaceClick() {
-        setIsAddPlacePopupOpen(true);
+        //setIsAddPlacePopupOpen(true);
     }
 
     function handleInfoTooltipPopupOpen() {
@@ -74,9 +74,9 @@ function App() {
 
     function closeAllPopups() {
         setSelectedCard(null)
-        setIsEditProfilePopupOpen(false)
-        setIsAddPlacePopupOpen(false)
-        setIsEditAvatarPopupOpen(false)
+        // setIsEditProfilePopupOpen(false)
+        // setIsAddPlacePopupOpen(false)
+        // setIsEditAvatarPopupOpen(false)
         setIsInfoTooltipPopupOpen(false)
     }
 
@@ -223,7 +223,7 @@ function App() {
 
                 </Switch>
                 <Footer/>
-                <ImagePopup card={selectedCard !== null && selectedCard}
+                {/* <ImagePopup card={selectedCard !== null && selectedCard}
                             onClose={closeAllPopups}/>
                 <EditProfilePopup isOpen={isEditProfilePopupOpen}
                                   onClose={closeAllPopups}
@@ -232,7 +232,7 @@ function App() {
                                  onClose={closeAllPopups}
                                  onUpdateAvatar={handleUpdateAvatar}/>
                 <AddPlacePopup isOpen={isAddPlacePopupOpen}
-                               onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+                               onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/> */}
                 <InfoTooltip isOpen={isInfoTooltipPopupOpen}
                              onClose={closeAllPopups} isSuccess={isSuccess}/>
             </div>

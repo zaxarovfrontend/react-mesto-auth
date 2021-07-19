@@ -1,9 +1,17 @@
 .login__button {
-    width: 358px;
-    height: 50px;
+    width: 260px;
+    height: 46px;
     background: #FFFFFF;
     border: 0;
     border-radius: 2px;
-    margin-top: 230px;
     outline: none;
+    margin-top: 173px;
 }
+
+@media screen and (min-width: 1024px) {
+    .login__button {
+        width: 358px;
+        height: 50px;
+        margin-top: 230px;
+    }
+  }
